@@ -238,56 +238,6 @@ vim.opt.rtp:prepend(lazypath)
 --
 -- NOTE: Here is where you install your plugins.
 --
---   {
---   'greggh/claude-code.nvim',
---   dependencies = {
---     'nvim-lua/plenary.nvim', -- Required for git operations
---   },
---   config = function()
---     require('claude-code').setup()
---   end,
--- },
-
--- {
---
---   'GeorgesAlkhouri/nvim-aider',
---   cmd = 'Aider',
---   -- Example key mappings for common actions:
---   keys = {
---     { '<leader>a/', '<cmd>Aider toggle<cr>', desc = 'Toggle Aider' },
---     { '<leader>as', '<cmd>Aider send<cr>', desc = 'Send to Aider', mode = { 'n', 'v' } },
---     { '<leader>ac', '<cmd>Aider command<cr>', desc = 'Aider Commands' },
---     { '<leader>ab', '<cmd>Aider buffer<cr>', desc = 'Send Buffer' },
---     { '<leader>a+', '<cmd>Aider add<cr>', desc = 'Add File' },
---     { '<leader>a-', '<cmd>Aider drop<cr>', desc = 'Drop File' },
---     { '<leader>ar', '<cmd>Aider add readonly<cr>', desc = 'Add Read-Only' },
---     -- Example nvim-tree.lua integration if needed
---     { '<leader>a+', '<cmd>AiderTreeAddFile<cr>', desc = 'Add File from Tree to Aider', ft = 'NvimTree' },
---     { '<leader>a-', '<cmd>AiderTreeDropFile<cr>', desc = 'Drop File from Tree from Aider', ft = 'NvimTree' },
---   },
---   dependencies = {
---     'folke/snacks.nvim',
---     --- The below dependencies are optional
---     'catppuccin/nvim',
---     'nvim-tree/nvim-tree.lua',
---     --- Neo-tree integration
---     {
---       'nvim-neo-tree/neo-tree.nvim',
---       opts = function(_, opts)
---         -- Example mapping configuration (already set by default)
---         -- opts.window = {
---         --   mappings = {
---         --     ["+"] = { "nvim_aider_add", desc = "add to aider" },
---         --     ["-"] = { "nvim_aider_drop", desc = "drop from aider" }
---         --     ["="] = { "nvim_aider_add_read_only", desc = "add read-only to aider" }
---         --   }
---         -- }
---         require('nvim_aider.neo_tree').setup(opts)
---       end,
---     },
---   },
---   config = true,
--- },
 
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
@@ -938,7 +888,7 @@ require('lazy').setup({
       -- Load the colorscheme here.
       -- Like many other themes, this one has different styles, and you could load
       -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'ron'
+      vim.cmd.colorscheme 'retrobox'
     end,
   },
 
@@ -1006,6 +956,55 @@ require('lazy').setup({
     --    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
     --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
     --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
+  },
+  {
+    'greggh/claude-code.nvim',
+    dependencies = {
+      'nvim-lua/plenary.nvim', -- Required for git operations
+    },
+    config = function()
+      require('claude-code').setup()
+    end,
+  },
+  {
+
+    'GeorgesAlkhouri/nvim-aider',
+    cmd = 'Aider',
+    -- Example key mappings for common actions:
+    keys = {
+      { '<leader>a/', '<cmd>Aider toggle<cr>', desc = 'Toggle Aider' },
+      { '<leader>as', '<cmd>Aider send<cr>', desc = 'Send to Aider', mode = { 'n', 'v' } },
+      { '<leader>ac', '<cmd>Aider command<cr>', desc = 'Aider Commands' },
+      { '<leader>ab', '<cmd>Aider buffer<cr>', desc = 'Send Buffer' },
+      { '<leader>a+', '<cmd>Aider add<cr>', desc = 'Add File' },
+      { '<leader>a-', '<cmd>Aider drop<cr>', desc = 'Drop File' },
+      { '<leader>ar', '<cmd>Aider add readonly<cr>', desc = 'Add Read-Only' },
+      -- Example nvim-tree.lua integration if needed
+      { '<leader>a+', '<cmd>AiderTreeAddFile<cr>', desc = 'Add File from Tree to Aider', ft = 'NvimTree' },
+      { '<leader>a-', '<cmd>AiderTreeDropFile<cr>', desc = 'Drop File from Tree from Aider', ft = 'NvimTree' },
+    },
+    dependencies = {
+      'folke/snacks.nvim',
+      --- The below dependencies are optional
+      'catppuccin/nvim',
+      'nvim-tree/nvim-tree.lua',
+      --- Neo-tree integration
+      {
+        'nvim-neo-tree/neo-tree.nvim',
+        opts = function(_, opts)
+          -- Example mapping configuration (already set by default)
+          -- opts.window = {
+          --   mappings = {
+          --     ["+"] = { "nvim_aider_add", desc = "add to aider" },
+          --     ["-"] = { "nvim_aider_drop", desc = "drop from aider" }
+          --     ["="] = { "nvim_aider_add_read_only", desc = "add read-only to aider" }
+          --   }
+          -- }
+          require('nvim_aider.neo_tree').setup(opts)
+        end,
+      },
+    },
+    config = true,
   },
 
   -- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
