@@ -596,6 +596,12 @@ require('lazy').setup({
               callback = vim.lsp.buf.document_highlight,
             })
 
+            vim.api.nvim_create_autocmd('CursorHold', {
+              callback = function()
+                vim.diagnostic.open_float(nil, { focus = false })
+              end,
+            })
+
             vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
               buffer = event.buf,
               group = highlight_augroup,
@@ -962,6 +968,23 @@ require('lazy').setup({
   },
   {
     'github/copilot.vim',
+    config = function()
+      local copilot_enabled = true
+      
+      local function toggle_copilot()
+        if copilot_enabled then
+          vim.cmd('Copilot disable')
+          copilot_enabled = false
+          print("Copilot disabled")
+        else
+          vim.cmd('Copilot enable')
+          copilot_enabled = true
+          print("Copilot enabled")
+        end
+      end
+      
+      vim.api.nvim_create_user_command('CopilotToggle', toggle_copilot, {})
+    end,
   },
   {
     'pmizio/typescript-tools.nvim',
