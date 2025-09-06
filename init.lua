@@ -90,6 +90,11 @@ P.S. You can delete this when you're done too. It's your config now! :)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
+-- Commented this out as it's not clear if it's necessary
+-- Configure mise shims for LSP servers and other tools
+-- This ensures all spawned processes use mise-managed versions
+-- vim.env.PATH = vim.env.HOME .. "/.local/share/mise/shims:" .. vim.env.PATH
+
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = false
 
@@ -970,19 +975,19 @@ require('lazy').setup({
     'github/copilot.vim',
     config = function()
       local copilot_enabled = true
-      
+
       local function toggle_copilot()
         if copilot_enabled then
-          vim.cmd('Copilot disable')
+          vim.cmd 'Copilot disable'
           copilot_enabled = false
-          print("Copilot disabled")
+          print 'Copilot disabled'
         else
-          vim.cmd('Copilot enable')
+          vim.cmd 'Copilot enable'
           copilot_enabled = true
-          print("Copilot enabled")
+          print 'Copilot enabled'
         end
       end
-      
+
       vim.api.nvim_create_user_command('CopilotToggle', toggle_copilot, {})
     end,
   },
