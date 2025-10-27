@@ -942,6 +942,12 @@ require('lazy').setup({
         return '%2l:%-2v'
       end
 
+      -- Hide git branch from statusline
+      ---@diagnostic disable-next-line: duplicate-set-field
+      statusline.section_git = function()
+        return ''
+      end
+
       -- ... and there is more!
       --  Check out: https://github.com/echasnovski/mini.nvim
     end,
@@ -1002,6 +1008,20 @@ require('lazy').setup({
     config = function()
       require('claude-code').setup()
     end,
+  },
+  {
+    'marcinjahn/gemini-cli.nvim',
+    cmd = 'Gemini',
+    -- -- Example key mappings for common actions:
+    -- keys = {
+    --   { "<leader>a/", "<cmd>Gemini toggle<cr>", desc = "Toggle Gemini CLI" },
+    --   { "<leader>aa", "<cmd>Gemini ask<cr>", desc = "Ask Gemini", mode = { "n", "v" } },
+    --   { "<leader>af", "<cmd>Gemini add_file<cr>", desc = "Add File" },
+    -- },
+    dependencies = {
+      'folke/snacks.nvim',
+    },
+    config = true,
   },
   {
 
