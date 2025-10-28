@@ -776,11 +776,24 @@ require('lazy').setup({
       end,
       formatters_by_ft = {
         lua = { 'stylua' },
+        typescript = { 'biome' },
+        typescriptreact = { 'biome' },
+        javascript = { 'biome' },
+        javascriptreact = { 'biome' },
+        json = { 'biome' },
+        jsonc = { 'biome' },
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
         -- javascript = { "prettierd", "prettier", stop_after_first = true },
+      },
+      formatters = {
+        biome = {
+          command = 'pnpm',
+          args = { 'biome', 'format', '--stdin-file-path', '$FILENAME' },
+          stdin = true,
+        },
       },
     },
   },
