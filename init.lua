@@ -984,28 +984,129 @@ require('lazy').setup({
     --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
     --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
   },
+  -- {
+  --   'github/copilot.vim',
+  --   config = function()
+  --     local copilot_enabled = true
+
+  --     local function toggle_copilot()
+  --       if copilot_enabled then
+  --         vim.cmd 'Copilot disable'
+  --         copilot_enabled = false
+  --         print 'Copilot disabled'
+  --       else
+  --         vim.cmd 'Copilot enable'
+  --         copilot_enabled = true
+  --         print 'Copilot enabled'
+  --       end
+  --     end
+
+  --     vim.api.nvim_create_user_command('CopilotToggle', toggle_copilot, {})
+  --   end,
+  -- },
+  -- {
+  --   'talos/copilot.vim',
+  --   config = function()
+  --     local copilot_enabled = true
+
+  --     local function toggle_copilot()
+  --       if copilot_enabled then
+  --         vim.cmd 'Copilot disable'
+  --         copilot_enabled = false
+  --         print 'Copilot disabled'
+  --       else
+  --         vim.cmd 'Copilot enable'
+  --         copilot_enabled = true
+  --         print 'Copilot enabled'
+  --       end
+  --     end
+
+  --     vim.api.nvim_create_user_command('CopilotToggle', toggle_copilot, {})
+  --   end,
+  -- },
   {
-    'github/copilot.vim',
+    'pmizio/typescript-tools.nvim',
+  },
+  {
+    'tpope/vim-fugitive',
+  },
+  {
+    'madox2/vim-ai',
+    build = 'pip install -r requirements.txt', -- This will install in a virtual env
+    dependencies = {
+      {
+        'williamboman/mason.nvim',
+        opts = function(_, opts)
+          opts.ensure_installed = opts.ensure_installed or {}
+          vim.list_extend(opts.ensure_installed, { 'python' })
+        end,
+      },
+    },
+    cmd = { 'AI', 'AIEdit', 'AIChat' },
+    keys = {
+      { '<leader>ai', ':AI<CR>', mode = { 'n', 'v' }, desc = 'AI Complete' },
+      { '<leader>ae', ':AIEdit<CR>', mode = { 'n', 'v' }, desc = 'AI Edit' },
+      { '<leader>ac', ':AIChat<CR>', mode = { 'n', 'v' }, desc = 'AI Chat' },
+    },
     config = function()
-      local copilot_enabled = true
+      -- Install pynvim in Neovim's virtual environment
+      vim.fn.system { 'python3', '-m', 'pip', 'install', '--user', 'pynvim' }
 
-      local function toggle_copilot()
-        if copilot_enabled then
-          vim.cmd 'Copilot disable'
-          copilot_enabled = false
-          print 'Copilot disabled'
-        else
-          vim.cmd 'Copilot enable'
-          copilot_enabled = true
-          print 'Copilot enabled'
-        end
+      local openrouter_config = {
+        provider = 'openai',
+        options = {
+          model = 'openai/gpt-4o-mini',
+          endpoint_url = 'https://openrouter.ai/api/v1/chat/completions',
+          auth_type = 'bearer',
+          token_load_fn = 'v:lua.load_openrouter_token',
+        },
+      }
+
+      vim.g.vim_ai_complete = openrouter_config
+      vim.g.vim_ai_edit = openrouter_config
+      vim.g.vim_ai_chat = openrouter_config
+
+      _G.load_openrouter_token = function()
+        return vim.env.OPENROUTER_API_KEY
       end
-
-      vim.api.nvim_create_user_command('CopilotToggle', toggle_copilot, {})
     end,
   },
   {
-    'pmizio/typescript-tools.nvim',
+    'folke/trouble.nvim',
+    opts = {}, -- for default options, refer to the configuration section for custom setup.
+    cmd = 'Trouble',
+    keys = {
+      {
+        '<leader>xx',
+        '<cmd>Trouble diagnostics toggle<cr>',
+        desc = 'Diagnostics (Trouble)',
+      },
+      {
+        '<leader>xX',
+        '<cmd>Trouble diagnostics toggle filter.buf=0<cr>',
+        desc = 'Buffer Diagnostics (Trouble)',
+      },
+      {
+        '<leader>cs',
+        '<cmd>Trouble symbols toggle focus=false<cr>',
+        desc = 'Symbols (Trouble)',
+      },
+      {
+        '<leader>cl',
+        '<cmd>Trouble lsp toggle focus=false win.position=right<cr>',
+        desc = 'LSP Definitions / references / ... (Trouble)',
+      },
+      {
+        '<leader>xL',
+        '<cmd>Trouble loclist toggle<cr>',
+        desc = 'Location List (Trouble)',
+      },
+      {
+        '<leader>xQ',
+        '<cmd>Trouble qflist toggle<cr>',
+        desc = 'Quickfix List (Trouble)',
+      },
+    },
   },
   {
     'coder/claudecode.nvim',
