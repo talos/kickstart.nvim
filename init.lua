@@ -187,12 +187,6 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 -- or just use <C-\><C-n> to exit terminal mode
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
--- TIP: Disable arrow keys in normal mode
--- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
--- vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
--- vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
--- vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
-
 -- Keybinds to make split navigation easier.
 --  Use CTRL+<hjkl> to switch between windows
 --
@@ -1014,14 +1008,43 @@ require('lazy').setup({
     'pmizio/typescript-tools.nvim',
   },
   {
-    'greggh/claude-code.nvim',
-    dependencies = {
-      'nvim-lua/plenary.nvim', -- Required for git operations
+    'coder/claudecode.nvim',
+    dependencies = { 'folke/snacks.nvim' },
+    config = true,
+    opts = {
+      terminal = {
+        provider = 'none', -- no UI actions; server + tools remain available. To use this, just open claude and run /ide
+      },
     },
-    config = function()
-      require('claude-code').setup()
-    end,
+    keys = {
+      { '<leader>a', nil, desc = 'AI/Claude Code' },
+      { '<leader>ac', '<cmd>ClaudeCode<cr>', desc = 'Toggle Claude' },
+      { '<leader>af', '<cmd>ClaudeCodeFocus<cr>', desc = 'Focus Claude' },
+      { '<leader>ar', '<cmd>ClaudeCode --resume<cr>', desc = 'Resume Claude' },
+      { '<leader>aC', '<cmd>ClaudeCode --continue<cr>', desc = 'Continue Claude' },
+      { '<leader>am', '<cmd>ClaudeCodeSelectModel<cr>', desc = 'Select Claude model' },
+      { '<leader>ab', '<cmd>ClaudeCodeAdd %<cr>', desc = 'Add current buffer' },
+      { '<leader>as', '<cmd>ClaudeCodeSend<cr>', mode = 'v', desc = 'Send to Claude' },
+      {
+        '<leader>as',
+        '<cmd>ClaudeCodeTreeAdd<cr>',
+        desc = 'Add file',
+        ft = { 'NvimTree', 'neo-tree', 'oil', 'minifiles', 'netrw' },
+      },
+      -- Diff management
+      { '<leader>aa', '<cmd>ClaudeCodeDiffAccept<cr>', desc = 'Accept diff' },
+      { '<leader>ad', '<cmd>ClaudeCodeDiffDeny<cr>', desc = 'Deny diff' },
+    },
   },
+  -- {
+  --   'greggh/claude-code.nvim',
+  --   dependencies = {
+  --     'nvim-lua/plenary.nvim', -- Required for git operations
+  --   },
+  --   config = function()
+  --     require('claude-code').setup()
+  --   end,
+  -- },
   {
     'marcinjahn/gemini-cli.nvim',
     cmd = 'Gemini',
@@ -1036,46 +1059,46 @@ require('lazy').setup({
     },
     config = true,
   },
-  {
+  -- {
 
-    'GeorgesAlkhouri/nvim-aider',
-    cmd = 'Aider',
-    -- Example key mappings for common actions:
-    keys = {
-      { '<leader>a/', '<cmd>Aider toggle<cr>', desc = 'Toggle Aider' },
-      { '<leader>as', '<cmd>Aider send<cr>', desc = 'Send to Aider', mode = { 'n', 'v' } },
-      { '<leader>ac', '<cmd>Aider command<cr>', desc = 'Aider Commands' },
-      { '<leader>ab', '<cmd>Aider buffer<cr>', desc = 'Send Buffer' },
-      { '<leader>a+', '<cmd>Aider add<cr>', desc = 'Add File' },
-      { '<leader>a-', '<cmd>Aider drop<cr>', desc = 'Drop File' },
-      { '<leader>ar', '<cmd>Aider add readonly<cr>', desc = 'Add Read-Only' },
-      -- Example nvim-tree.lua integration if needed
-      { '<leader>a+', '<cmd>AiderTreeAddFile<cr>', desc = 'Add File from Tree to Aider', ft = 'NvimTree' },
-      { '<leader>a-', '<cmd>AiderTreeDropFile<cr>', desc = 'Drop File from Tree from Aider', ft = 'NvimTree' },
-    },
-    dependencies = {
-      'folke/snacks.nvim',
-      --- The below dependencies are optional
-      'catppuccin/nvim',
-      'nvim-tree/nvim-tree.lua',
-      --- Neo-tree integration
-      {
-        'nvim-neo-tree/neo-tree.nvim',
-        opts = function(_, opts)
-          -- Example mapping configuration (already set by default)
-          -- opts.window = {
-          --   mappings = {
-          --     ["+"] = { "nvim_aider_add", desc = "add to aider" },
-          --     ["-"] = { "nvim_aider_drop", desc = "drop from aider" }
-          --     ["="] = { "nvim_aider_add_read_only", desc = "add read-only to aider" }
-          --   }
-          -- }
-          require('nvim_aider.neo_tree').setup(opts)
-        end,
-      },
-    },
-    config = true,
-  },
+  --   'GeorgesAlkhouri/nvim-aider',
+  --   cmd = 'Aider',
+  --   -- Example key mappings for common actions:
+  --   keys = {
+  --     { '<leader>a/', '<cmd>Aider toggle<cr>', desc = 'Toggle Aider' },
+  --     { '<leader>as', '<cmd>Aider send<cr>', desc = 'Send to Aider', mode = { 'n', 'v' } },
+  --     { '<leader>ac', '<cmd>Aider command<cr>', desc = 'Aider Commands' },
+  --     { '<leader>ab', '<cmd>Aider buffer<cr>', desc = 'Send Buffer' },
+  --     { '<leader>a+', '<cmd>Aider add<cr>', desc = 'Add File' },
+  --     { '<leader>a-', '<cmd>Aider drop<cr>', desc = 'Drop File' },
+  --     { '<leader>ar', '<cmd>Aider add readonly<cr>', desc = 'Add Read-Only' },
+  --     -- Example nvim-tree.lua integration if needed
+  --     { '<leader>a+', '<cmd>AiderTreeAddFile<cr>', desc = 'Add File from Tree to Aider', ft = 'NvimTree' },
+  --     { '<leader>a-', '<cmd>AiderTreeDropFile<cr>', desc = 'Drop File from Tree from Aider', ft = 'NvimTree' },
+  --   },
+  --   dependencies = {
+  --     'folke/snacks.nvim',
+  --     --- The below dependencies are optional
+  --     'catppuccin/nvim',
+  --     'nvim-tree/nvim-tree.lua',
+  --     --- Neo-tree integration
+  --     {
+  --       'nvim-neo-tree/neo-tree.nvim',
+  --       opts = function(_, opts)
+  --         -- Example mapping configuration (already set by default)
+  --         -- opts.window = {
+  --         --   mappings = {
+  --         --     ["+"] = { "nvim_aider_add", desc = "add to aider" },
+  --         --     ["-"] = { "nvim_aider_drop", desc = "drop from aider" }
+  --         --     ["="] = { "nvim_aider_add_read_only", desc = "add read-only to aider" }
+  --         --   }
+  --         -- }
+  --         require('nvim_aider.neo_tree').setup(opts)
+  --       end,
+  --     },
+  --   },
+  --   config = true,
+  -- },
 
   -- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
   -- init.lua. If you want these files, they are in the repository, so you can just download them and
